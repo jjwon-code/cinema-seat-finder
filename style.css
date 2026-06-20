@@ -18,10 +18,10 @@
   /* Seat Quality Colors */
   --color-best: #ffd700;       /* Gold/Royal */
   --color-best-rgb: 255, 215, 0;
-  --color-good: #10b981;       /* Emerald */
-  --color-good-rgb: 16, 185, 129;
-  --color-normal: #cbd5e1;     /* Silver/Light Gray */
-  --color-avoid: #4b5563;      /* Muted/Avoid */
+  --color-good: #3b82f6;       /* Blue (추천) */
+  --color-good-rgb: 59, 130, 246;
+  --color-normal: #111827;     /* Dark Black (일반) */
+  --color-avoid: #a34848;      /* Faded Muted Red (비추천 - 눈이 편안한 붉은색) */
   --color-disabled: #1e293b;
   
   /* Text Colors */
@@ -867,37 +867,38 @@ body {
 }
 
 .seat-rating-normal {
-  background-color: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.2);
-  color: var(--text-main);
+  background-color: var(--color-normal);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: var(--text-sub);
 }
 
 .seat-rating-normal:hover {
   transform: scale(1.2);
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: #1f2937;
+  color: #fff;
 }
 
 .seat-rating-avoid {
-  background-color: rgba(75, 85, 99, 0.25);
-  border-color: rgba(75, 85, 99, 0.4);
-  color: var(--text-muted);
+  background-color: rgba(163, 72, 72, 0.15);
+  border-color: rgba(163, 72, 72, 0.45);
+  color: #c99a9a;
 }
 
 .seat-rating-avoid:hover {
   transform: scale(1.1);
-  background-color: rgba(75, 85, 99, 0.5);
+  background-color: rgba(163, 72, 72, 0.35);
   color: #fff;
 }
 
 .seat-type-wheelchair {
-  background-color: #2563eb;
-  border-color: #3b82f6;
+  background-color: #7c3aed;
+  border-color: #8b5cf6;
   color: #fff;
 }
 
 .seat-type-wheelchair:hover {
   transform: scale(1.2);
-  box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+  box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
 }
 
 .seat-aisle {
@@ -1010,8 +1011,9 @@ body {
   color: #fff !important;
 }
 .quality-normal {
-  background-color: rgba(255, 255, 255, 0.15) !important;
-  color: var(--text-main) !important;
+  background-color: var(--color-normal) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  color: var(--text-sub) !important;
 }
 .quality-avoid {
   background-color: var(--color-avoid) !important;
