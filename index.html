@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>명당자리 - 영화관 명당 좌석 추천 가이드</title>
+  <meta name="description" content="영화관 브랜드(CGV, 메가박스, 롯데시네마)와 상영관 타입(IMAX, Dolby, ScreenX 등), 영화 종류에 맞춘 최적의 명당 자리를 찾아보세요. 실제 좌석 배치도와 입체 뷰포트 시뮬레이션, 생생한 후기까지 제공합니다.">
+  
+  <!-- Google Fonts (Outfit & Noto Sans KR) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons (for interactive look) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient Red Theater Glow Background -->
+  <div class="theater-glow-bg"></div>
+
+  <header class="app-header">
+    <div class="header-container">
+      <div class="logo-area" id="btn-home">
+        <i class="fa-solid fa-ticket logo-icon"></i>
+        <h1>명당자리<span>Myeongdang</span></h1>
+      </div>
+      
+      <!-- Progress Breadcrumbs (Interactive) -->
+      <nav class="breadcrumb-nav">
+        <ul class="breadcrumbs">
+          <li class="breadcrumb-item active" data-step="1">
+            <span class="step-num">1</span>
+            <span class="step-label">브랜드</span>
+          </li>
+          <li class="breadcrumb-separator"><i class="fa-solid fa-chevron-right"></i></li>
+          <li class="breadcrumb-item" data-step="2">
+            <span class="step-num">2</span>
+            <span class="step-label">지점</span>
+          </li>
+          <li class="breadcrumb-separator"><i class="fa-solid fa-chevron-right"></i></li>
+          <li class="breadcrumb-item" data-step="3">
+            <span class="step-num">3</span>
+            <span class="step-label">상영관</span>
+          </li>
+          <li class="breadcrumb-separator"><i class="fa-solid fa-chevron-right"></i></li>
+          <li class="breadcrumb-item" data-step="4">
+            <span class="step-num">4</span>
+            <span class="step-label">좌석 선택</span>
+          </li>
+        </ul>
+      </nav>
+
+      <button id="btn-back" class="btn-back-header hidden">
+        <i class="fa-solid fa-arrow-left"></i> 이전 단계
+      </button>
+    </div>
+  </header>
+
+  <main class="app-main">
+    <!-- STEP 1: Brand Selection -->
+    <section id="step-brand" class="step-section active">
+      <div class="section-hero">
+        <span class="badge badge-accent">시네마 명당 가이드</span>
+        <h2>더 완벽한 몰입을 위한 영화관 명당 찾기</h2>
+        <p>상영관 특성과 영화 종류에 최적화된 명당 자리를 색상으로 비교하고 확인해 보세요.</p>
+      </div>
+
+      <div class="brand-grid" id="brand-cards-container">
+        <!-- Rendered dynamically in app.js -->
+      </div>
+    </section>
+
+    <!-- STEP 2: Branch Selection -->
+    <section id="step-branch" class="step-section">
+      <div class="section-title-wrapper">
+        <button class="btn-back-inline btn-back-action"><i class="fa-solid fa-arrow-left"></i></button>
+        <div class="title-details">
+          <h2>영화관 지점 선택</h2>
+          <p id="branch-subtitle-brand">브랜드명을 기반으로 지점을 필터링합니다.</p>
+        </div>
+      </div>
+
+      <!-- Filters & Search -->
+      <div class="filter-bar">
+        <div class="region-tabs" id="region-filter-tabs">
+          <button class="tab-btn active" data-region="all">전체</button>
+          <button class="tab-btn" data-region="서울">서울</button>
+          <button class="tab-btn" data-region="경기">경기/인천</button>
+          <button class="tab-btn" data-region="충청">충청/기타</button>
+        </div>
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass search-icon"></i>
+          <input type="text" id="branch-search-input" placeholder="지점 이름 검색 (예: 용산, 코엑스)..." autocomplete="off">
+        </div>
+      </div>
+
+      <div class="branch-grid" id="branch-list-container">
+        <!-- Rendered dynamically in app.js -->
+      </div>
+    </section>
+
+    <!-- STEP 3: Screen Selection -->
+    <section id="step-screen" class="step-section">
+      <div class="section-title-wrapper">
+        <button class="btn-back-inline btn-back-action"><i class="fa-solid fa-arrow-left"></i></button>
+        <div class="title-details">
+          <h2>상영관 선택</h2>
+          <p id="screen-subtitle-branch">원하시는 타입의 상영관을 클릭해 명당 자리를 분석하세요.</p>
+        </div>
+      </div>
+
+      <div class="screen-list" id="screen-list-container">
+        <!-- Rendered dynamically in app.js -->
+      </div>
+    </section>
+
+    <!-- STEP 4: Interactive Seat Map & Detail Info -->
+    <section id="step-detail" class="step-section">
+      <div class="seat-view-header">
+        <div class="seat-header-main">
+          <button class="btn-back-inline btn-back-action"><i class="fa-solid fa-arrow-left"></i></button>
+          <div class="title-details">
+            <h2 id="seat-view-title">CGV 용산아이파크몰 - IMAX관</h2>
+            <div class="seat-view-badges">
+              <span class="badge" id="badge-screen-type">IMAX</span>
+              <span class="badge badge-outline" id="badge-seat-count">444석</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Movie Type Selector (Crucial for dynamic sweet spot) -->
+        <div class="movie-type-container">
+          <label class="section-small-label"><i class="fa-solid fa-film"></i> 관람할 영화의 특성을 선택하세요</label>
+          <div class="movie-type-chips" id="movie-type-chips">
+            <!-- Rendered dynamically in app.js -->
+          </div>
+        </div>
+      </div>
+
+      <div class="seat-finder-layout">
+        <!-- Left: Seat Map Area -->
+        <div class="seat-map-wrapper card-glass">
+          <!-- Theater Screen Art -->
+          <div class="screen-container">
+            <div class="screen-glow"></div>
+            <div class="screen-canvas">SCREEN</div>
+            <div class="screen-curtain-left"></div>
+            <div class="screen-curtain-right"></div>
+          </div>
+
+          <!-- Color Legend -->
+          <div class="legend-container">
+            <div class="legend-item">
+              <span class="legend-dot seat-rating-best"></span>
+              <span class="legend-text">명당 (최적)</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-dot seat-rating-good"></span>
+              <span class="legend-text">추천 (우수)</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-dot seat-rating-normal"></span>
+              <span class="legend-text">일반 (보통)</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-dot seat-rating-avoid"></span>
+              <span class="legend-text">비추천 (피로)</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-dot seat-type-wheelchair"><i class="fa-solid fa-wheelchair"></i></span>
+              <span class="legend-text">휠체어석</span>
+            </div>
+          </div>
+
+          <!-- The Scrollable Seating Chart -->
+          <div class="seat-grid-scroll-area">
+            <div class="seat-grid-container" id="seat-grid">
+              <!-- Rendered dynamically in app.js -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Seat Detail & Review Panel -->
+        <div class="detail-sidebar-container">
+          <!-- Default State: Select a seat prompt -->
+          <div id="seat-sidebar-empty" class="sidebar-empty card-glass">
+            <i class="fa-solid fa-circle-info empty-icon"></i>
+            <h3>좌석 분석 정보를 보려면<br>평면도에서 좌석을 클릭하세요.</h3>
+            <p>선택한 좌석에서의 가상 시야 3D 변형 효과와 관람평을 확인할 수 있습니다.</p>
+          </div>
+
+          <!-- Active State: Seat Analysis details -->
+          <div id="seat-sidebar-content" class="sidebar-content card-glass hidden">
+            <div class="sidebar-section-header">
+              <div class="seat-meta">
+                <span class="seat-name" id="sidebar-seat-coord">H14</span>
+                <span class="seat-quality-badge" id="sidebar-seat-quality">명당 (최적)</span>
+              </div>
+              <button class="btn-close-sidebar" id="btn-close-sidebar"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <!-- Custom Interactive 3D perspective display -->
+            <div class="virtual-viewer-box">
+              <h4 class="viewer-title"><i class="fa-solid fa-eye"></i> 가상 시야 시뮬레이터</h4>
+              <div class="viewer-screen-frame">
+                <!-- Inner screen mockup that skews dynamically based on seat row and column distance -->
+                <div class="virtual-screen" id="virtual-screen">
+                  <span class="virtual-screen-text">SCREEN VIEW</span>
+                </div>
+              </div>
+              <p class="viewer-desc" id="sidebar-seat-desc">이 좌석에서는 스크린이 한눈에 가득 찹니다.</p>
+            </div>
+
+            <!-- Seat Evaluation Details -->
+            <div class="seat-stats">
+              <div class="stat-box">
+                <span class="stat-label">추천 별점</span>
+                <span class="stat-val" id="sidebar-seat-score">4.8 / 5.0</span>
+              </div>
+              <div class="stat-box">
+                <span class="stat-label">좌석 타입</span>
+                <span class="stat-val" id="sidebar-seat-type">일반석</span>
+              </div>
+            </div>
+
+            <!-- Reviews Section -->
+            <div class="reviews-section">
+              <h4 class="section-title"><i class="fa-solid fa-comments"></i> 실시간 관람평 <span id="sidebar-reviews-count">(0)</span></h4>
+              
+              <!-- Review list scrollable container -->
+              <div class="reviews-list" id="sidebar-reviews-list">
+                <!-- Rendered dynamically -->
+              </div>
+
+              <!-- Add Review Form -->
+              <form class="review-form" id="review-submit-form">
+                <h5 class="form-title">관람평 남기기</h5>
+                <div class="rating-input-row">
+                  <span class="rating-label">별점 선택:</span>
+                  <div class="star-rating" id="form-star-rating">
+                    <i class="fa-solid fa-star star-btn active" data-value="5"></i>
+                    <i class="fa-solid fa-star star-btn active" data-value="4"></i>
+                    <i class="fa-solid fa-star star-btn active" data-value="3"></i>
+                    <i class="fa-solid fa-star star-btn active" data-value="2"></i>
+                    <i class="fa-solid fa-star star-btn active" data-value="1"></i>
+                  </div>
+                </div>
+                <div class="input-row">
+                  <textarea id="form-review-comment" rows="2" placeholder="영화 관람 후 느낀 화면 시야, 음향 평을 자유롭게 적어주세요..." required></textarea>
+                </div>
+                <button type="submit" class="btn-submit-review">후기 등록 <i class="fa-solid fa-paper-plane"></i></button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <i class="fa-solid fa-ticket logo-icon"></i>
+        <h3>명당자리</h3>
+      </div>
+      <p class="footer-copy">© 2026 명당자리 (Cinema Seating Guide). All rights reserved.</p>
+      <p class="footer-disclaimer">본 사이트는 각 상영관 타입(IMAX, Dolby Cinema, ScreenX) 및 영화의 자막 여부에 따른 기하학적 몰입 각도와 오디오 크로스오버 음향 중심 데이터를 분석해 시인성 지표를 모의 시각화하여 추천을 제공합니다. 실제 영화관 예매 정보와 다소 다를 수 있습니다.</p>
+    </div>
+  </footer>
+
+  <!-- Script Modules -->
+  <script type="module" src="app.js"></script>
+</body>
+</html>

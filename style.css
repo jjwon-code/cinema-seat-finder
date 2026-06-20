@@ -1,0 +1,1456 @@
+/* style.css - 영화관 명당 찾기 웹사이트 디자인 시스템 및 스타일 */
+
+/* 1. 디자인 토큰 및 변수 */
+:root {
+  --bg-dark: #07090e;
+  --bg-dark-rgb: 7, 9, 14;
+  --bg-deep-indigo: #0f121d;
+  --bg-card: rgba(18, 24, 38, 0.7);
+  --bg-card-border: rgba(255, 255, 255, 0.06);
+  --bg-card-hover-border: rgba(229, 9, 20, 0.35);
+  
+  /* Velvet Red Accent (영화관 감성 포인트 칼라) */
+  --velvet-red: #e50914;
+  --velvet-red-rgb: 229, 9, 20;
+  --velvet-red-glow: rgba(229, 9, 20, 0.45);
+  --velvet-red-hover: #b8070e;
+  
+  /* Seat Quality Colors */
+  --color-best: #ffd700;       /* Gold/Royal */
+  --color-best-rgb: 255, 215, 0;
+  --color-good: #10b981;       /* Emerald */
+  --color-good-rgb: 16, 185, 129;
+  --color-normal: #cbd5e1;     /* Silver/Light Gray */
+  --color-avoid: #4b5563;      /* Muted/Avoid */
+  --color-disabled: #1e293b;
+  
+  /* Text Colors */
+  --text-main: #f8fafc;
+  --text-sub: #94a3b8;
+  --text-muted: #64748b;
+  
+  /* Transitions & Shadows */
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: all 0.15s ease;
+  --glow-shadow: 0 0 20px rgba(229, 9, 20, 0.15);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+  --border-radius-sm: 8px;
+  --border-radius-md: 12px;
+  --border-radius-lg: 20px;
+}
+
+/* 2. 전역 스타일 초기화 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  font-family: 'Noto Sans KR', 'Outfit', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* 스크롤바 스타일 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-dark);
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--velvet-red);
+}
+
+/* 극장 조명 앰비언트 배경 */
+.theater-glow-bg {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 600px;
+  background: radial-gradient(circle at top, rgba(var(--velvet-red-rgb), 0.15) 0%, rgba(var(--bg-dark-rgb), 0) 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* 3. 공통 컴포넌트 */
+.card-glass {
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--bg-card-border);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--glass-shadow);
+  transition: var(--transition-smooth);
+}
+
+.card-glass:hover {
+  border-color: var(--bg-card-hover-border);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-main);
+  text-transform: uppercase;
+}
+
+.badge-accent {
+  background: rgba(var(--velvet-red-rgb), 0.2);
+  color: #ff8a90;
+  border: 1px solid rgba(var(--velvet-red-rgb), 0.4);
+}
+
+.badge-outline {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--text-sub);
+}
+
+/* 4. 헤더 및 네비게이션 */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(var(--bg-dark-rgb), 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.header-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 70px;
+}
+
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.logo-icon {
+  font-size: 1.8rem;
+  color: var(--velvet-red);
+  text-shadow: 0 0 10px var(--velvet-red-glow);
+  transform: rotate(-10deg);
+  transition: var(--transition-smooth);
+}
+
+.logo-area:hover .logo-icon {
+  transform: rotate(0deg) scale(1.1);
+}
+
+.logo-area h1 {
+  font-family: 'Outfit', 'Noto Sans KR', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: var(--text-main);
+}
+
+.logo-area h1 span {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--text-sub);
+  display: block;
+  line-height: 0.8;
+  letter-spacing: 1px;
+}
+
+/* 네비게이션 브레드크럼 */
+.breadcrumb-nav {
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumbs {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.breadcrumb-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  transition: var(--transition-smooth);
+}
+
+.breadcrumb-item.active {
+  color: var(--text-main);
+}
+
+.breadcrumb-item.completed {
+  color: var(--velvet-red);
+  cursor: pointer;
+}
+
+.step-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #1e293b;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-sub);
+  transition: var(--transition-smooth);
+}
+
+.breadcrumb-item.active .step-num {
+  background: var(--velvet-red);
+  color: #fff;
+  box-shadow: 0 0 8px var(--velvet-red-glow);
+}
+
+.breadcrumb-item.completed .step-num {
+  background: rgba(var(--velvet-red-rgb), 0.2);
+  border: 1px solid var(--velvet-red);
+  color: var(--velvet-red);
+}
+
+.breadcrumb-separator {
+  color: var(--text-muted);
+  font-size: 0.7rem;
+}
+
+.btn-back-header {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-main);
+  padding: 8px 14px;
+  border-radius: var(--border-radius-sm);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: var(--transition-fast);
+}
+
+.btn-back-header:hover {
+  background: var(--velvet-red);
+  border-color: var(--velvet-red);
+  box-shadow: 0 0 10px var(--velvet-red-glow);
+}
+
+.btn-back-header.hidden {
+  display: none !important;
+}
+
+/* 5. 메인 레이아웃 및 SPA 섹션 */
+.app-main {
+  flex: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 40px 20px;
+  z-index: 1;
+}
+
+.step-section {
+  display: none;
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+.step-section.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 섹션 타이틀 및 히어로 */
+.section-hero {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.section-hero h2 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin: 15px 0;
+  letter-spacing: -0.5px;
+}
+
+.section-hero p {
+  color: var(--text-sub);
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.section-title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.btn-back-inline {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.btn-back-inline:hover {
+  background: var(--velvet-red);
+  border-color: var(--velvet-red);
+  box-shadow: 0 0 10px var(--velvet-red-glow);
+  transform: scale(1.05);
+}
+
+.title-details h2 {
+  font-size: 1.6rem;
+  font-weight: 800;
+}
+
+.title-details p {
+  color: var(--text-sub);
+  font-size: 0.95rem;
+}
+
+/* 6. STEP 1: 브랜드 선택 카드 디자인 */
+.brand-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+  margin-top: 20px;
+}
+
+.brand-card {
+  padding: 35px 25px;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.brand-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, transparent 60%, rgba(var(--velvet-red-rgb), 0.15) 100%);
+  opacity: 0;
+  transition: var(--transition-smooth);
+}
+
+.brand-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
+}
+
+.brand-card:hover::after {
+  opacity: 1;
+}
+
+.brand-icon-wrapper {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-smooth);
+}
+
+.brand-card:hover .brand-icon-wrapper {
+  background: var(--brand-accent);
+  color: #fff;
+  box-shadow: 0 0 20px var(--brand-accent);
+  transform: scale(1.1) rotate(5deg);
+}
+
+.brand-icon-wrapper i {
+  font-size: 2.2rem;
+  color: var(--brand-accent);
+}
+
+.brand-card:hover .brand-icon-wrapper i {
+  color: #fff;
+}
+
+.brand-card h3 {
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.brand-card p {
+  font-size: 0.9rem;
+  color: var(--text-sub);
+  line-height: 1.4;
+}
+
+.brand-action-btn {
+  margin-top: 10px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--brand-accent);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  opacity: 0.8;
+}
+
+.brand-card:hover .brand-action-btn {
+  color: #fff;
+  opacity: 1;
+}
+
+/* 7. STEP 2: 지점 선택 필터 및 리스트 */
+.filter-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.region-tabs {
+  display: flex;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 4px;
+  border-radius: 30px;
+}
+
+.tab-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-sub);
+  padding: 8px 20px;
+  border-radius: 30px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.tab-btn.active {
+  background: var(--velvet-red);
+  color: #fff;
+  box-shadow: 0 2px 10px var(--velvet-red-glow);
+}
+
+.search-box {
+  position: relative;
+  max-width: 320px;
+  width: 100%;
+}
+
+.search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+#branch-search-input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 10px 15px 10px 40px;
+  border-radius: 30px;
+  color: var(--text-main);
+  font-size: 0.9rem;
+  outline: none;
+  transition: var(--transition-fast);
+}
+
+#branch-search-input:focus {
+  border-color: var(--velvet-red);
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 0 10px var(--velvet-red-glow);
+}
+
+.branch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.branch-card {
+  padding: 20px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.branch-card:hover {
+  transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.03);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+.branch-info h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.branch-info span {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.branch-arrow {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  transition: var(--transition-fast);
+}
+
+.branch-card:hover .branch-arrow {
+  color: var(--velvet-red);
+  transform: translateX(4px);
+}
+
+/* 8. STEP 3: 상영관 리스트 */
+.screen-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.screen-card {
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  cursor: pointer;
+}
+
+.screen-card:hover {
+  transform: translateX(6px);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.screen-main-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.screen-title-area {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.screen-title-area h3 {
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.screen-desc {
+  font-size: 0.9rem;
+  color: var(--text-sub);
+  max-width: 600px;
+}
+
+.screen-chevron {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.02);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-sub);
+  transition: var(--transition-fast);
+}
+
+.screen-card:hover .screen-chevron {
+  background: var(--velvet-red);
+  color: #fff;
+  box-shadow: 0 0 10px var(--velvet-red-glow);
+  transform: scale(1.05);
+}
+
+/* 9. STEP 4: 좌석 및 상세 분석 레이아웃 */
+.seat-view-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 25px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding-bottom: 20px;
+}
+
+.seat-header-main {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.seat-view-badges {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+/* 영화 종류 칩 필터 */
+.movie-type-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.section-small-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-sub);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.movie-type-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.movie-chip {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  color: var(--text-sub);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.movie-chip:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-main);
+}
+
+.movie-chip.active {
+  background: rgba(var(--velvet-red-rgb), 0.15);
+  border-color: var(--velvet-red);
+  color: var(--text-main);
+  box-shadow: 0 0 10px rgba(var(--velvet-red-rgb), 0.15);
+}
+
+/* 핵심 좌석 레이아웃 그리드 */
+.seat-finder-layout {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 24px;
+  align-items: start;
+}
+
+.seat-map-wrapper {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* 스크린 아트 및 붉은 조명 효과 */
+.screen-container {
+  width: 80%;
+  max-width: 500px;
+  margin: 15px auto 40px auto;
+  position: relative;
+}
+
+.screen-canvas {
+  width: 100%;
+  height: 20px;
+  background: #e2e8f0;
+  border-radius: 50% / 100% 100% 0 0; /* 커브 모양 아치 */
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.5), 0 0 35px 5px rgba(255, 255, 255, 0.2);
+  text-align: center;
+  color: #000;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 900;
+  line-height: 20px;
+  letter-spacing: 5px;
+  position: relative;
+  z-index: 2;
+}
+
+.screen-glow {
+  position: absolute;
+  top: 10px;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background: radial-gradient(ellipse at top, rgba(226, 232, 240, 0.25) 0%, rgba(226, 232, 240, 0) 70%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* 빨간 벨벳 스크린 커튼 장식 */
+.screen-curtain-left,
+.screen-curtain-right {
+  position: absolute;
+  top: -15px;
+  width: 25px;
+  height: 50px;
+  background: linear-gradient(90deg, #500 0%, #b00 50%, #500 100%);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  border-radius: 3px;
+  z-index: 1;
+}
+
+.screen-curtain-left {
+  left: -20px;
+  border-radius: 0 0 50% 0 / 0 0 10% 0;
+}
+
+.screen-curtain-right {
+  right: -20px;
+  border-radius: 0 0 0 50% / 0 0 0 10%;
+}
+
+/* 범례 (Legend) */
+.legend-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 30px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  color: #fff;
+}
+
+.legend-text {
+  font-size: 0.8rem;
+  color: var(--text-sub);
+  font-weight: 500;
+}
+
+/* 10. 좌석 그리드 스크롤 및 배치 */
+.seat-grid-scroll-area {
+  width: 100%;
+  overflow-x: auto;
+  padding: 10px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.seat-grid-container {
+  display: inline-grid;
+  gap: 6px;
+  margin: 0 auto;
+  padding: 10px;
+  user-select: none;
+}
+
+/* 좌석 스타일 */
+.seat-item {
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6rem;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  color: #fff;
+  border: 1px solid transparent;
+}
+
+/* 각 등급별 좌석 스타일 */
+.seat-rating-best {
+  background-color: var(--color-best);
+  border-color: rgba(var(--color-best-rgb), 0.5);
+  color: #000;
+  box-shadow: 0 0 6px rgba(var(--color-best-rgb), 0.35);
+}
+
+.seat-rating-best:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 12px rgba(var(--color-best-rgb), 0.75);
+}
+
+.seat-rating-good {
+  background-color: var(--color-good);
+  border-color: rgba(var(--color-good-rgb), 0.5);
+  box-shadow: 0 0 6px rgba(var(--color-good-rgb), 0.25);
+}
+
+.seat-rating-good:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 12px rgba(var(--color-good-rgb), 0.6);
+}
+
+.seat-rating-normal {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: var(--text-main);
+}
+
+.seat-rating-normal:hover {
+  transform: scale(1.2);
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.seat-rating-avoid {
+  background-color: rgba(75, 85, 99, 0.25);
+  border-color: rgba(75, 85, 99, 0.4);
+  color: var(--text-muted);
+}
+
+.seat-rating-avoid:hover {
+  transform: scale(1.1);
+  background-color: rgba(75, 85, 99, 0.5);
+  color: #fff;
+}
+
+.seat-type-wheelchair {
+  background-color: #2563eb;
+  border-color: #3b82f6;
+  color: #fff;
+}
+
+.seat-type-wheelchair:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+}
+
+.seat-aisle {
+  width: 14px;
+  height: 22px;
+  pointer-events: none;
+}
+
+.seat-row-label {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  pointer-events: none;
+  font-family: 'Outfit', sans-serif;
+}
+
+/* 활성화(선택)된 좌석 테두리 표시 */
+.seat-item.selected {
+  outline: 2px solid #fff;
+  outline-offset: 1px;
+  transform: scale(1.15);
+  z-index: 10;
+}
+
+/* 11. 우측 사이드바 패널 */
+.detail-sidebar-container {
+  position: sticky;
+  top: 90px;
+}
+
+.sidebar-empty {
+  padding: 40px 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.empty-icon {
+  font-size: 2.2rem;
+  color: var(--text-muted);
+}
+
+.sidebar-empty h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.sidebar-empty p {
+  font-size: 0.85rem;
+  color: var(--text-sub);
+  line-height: 1.5;
+}
+
+.sidebar-content {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-height: calc(100vh - 150px);
+  overflow-y: auto;
+}
+
+.sidebar-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding-bottom: 14px;
+}
+
+.seat-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sidebar-seat-coord,
+.seat-name {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--velvet-red);
+  text-shadow: 0 0 10px rgba(var(--velvet-red-rgb), 0.15);
+}
+
+.seat-quality-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: var(--velvet-red);
+  color: #fff;
+}
+
+/* 명당 퀄리티 뱃지 색상 매핑 */
+.quality-best {
+  background-color: var(--color-best) !important;
+  color: #000 !important;
+}
+.quality-good {
+  background-color: var(--color-good) !important;
+  color: #fff !important;
+}
+.quality-normal {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  color: var(--text-main) !important;
+}
+.quality-avoid {
+  background-color: var(--color-avoid) !important;
+  color: #fff !important;
+}
+
+.btn-close-sidebar {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.btn-close-sidebar:hover {
+  color: var(--text-main);
+  transform: scale(1.1);
+}
+
+/* 12. 가상 시야 3D 시뮬레이터 */
+.virtual-viewer-box {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: var(--border-radius-sm);
+  padding: 16px;
+}
+
+.viewer-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-sub);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.viewer-screen-frame {
+  height: 110px;
+  background: #030406;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  perspective: 250px; /* 3D 공간 왜곡 수치 */
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.viewer-screen-frame::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 20px;
+  background: linear-gradient(180deg, transparent, rgba(var(--velvet-red-rgb), 0.25));
+  pointer-events: none;
+}
+
+.virtual-screen {
+  width: 75%;
+  height: 55px;
+  background: #e2e8f0;
+  border-radius: 2px;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.4s ease-out; /* 클릭 시 부드럽게 3D 변경 */
+  transform-style: preserve-3d;
+}
+
+.virtual-screen-text {
+  color: #030406;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+}
+
+.viewer-desc {
+  font-size: 0.8rem;
+  color: var(--text-sub);
+  margin-top: 10px;
+  line-height: 1.4;
+  text-align: center;
+}
+
+/* 좌석 지표 통계 */
+.seat-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.stat-box {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: var(--border-radius-sm);
+  padding: 10px;
+  text-align: center;
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.stat-val {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+#sidebar-seat-score {
+  color: var(--color-best);
+}
+
+/* 13. 후기 섹션 및 폼 */
+.reviews-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.reviews-section .section-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-main);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 8px;
+  margin-bottom: 4px;
+}
+
+.reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 160px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.review-item {
+  background: rgba(255, 255, 255, 0.02);
+  border-left: 3px solid var(--velvet-red);
+  padding: 10px;
+  border-radius: 0 4px 4px 0;
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.review-stars {
+  color: var(--color-best);
+  font-size: 0.65rem;
+  display: flex;
+  gap: 1px;
+}
+
+.review-date {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+}
+
+.review-comment {
+  font-size: 0.78rem;
+  color: var(--text-sub);
+  line-height: 1.45;
+}
+
+.review-empty {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 20px 0;
+}
+
+/* 후기 입력 폼 */
+.review-form {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: var(--border-radius-sm);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-sub);
+}
+
+.rating-input-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2px;
+}
+
+.rating-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.star-rating {
+  display: flex;
+  flex-direction: row-reverse; /* 마우스 호버 반응을 위해 순서 역행 */
+  gap: 2px;
+}
+
+.star-btn {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+/* 라디오스타 마우스 오버 효과 */
+.star-btn:hover,
+.star-btn:hover ~ .star-btn {
+  color: var(--color-best);
+}
+
+.star-btn.active,
+.star-btn.active ~ .star-btn {
+  color: var(--color-best);
+}
+
+#form-review-comment {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  padding: 8px;
+  color: var(--text-main);
+  font-size: 0.78rem;
+  font-family: inherit;
+  resize: none;
+  outline: none;
+}
+
+#form-review-comment:focus {
+  border-color: var(--velvet-red);
+}
+
+.btn-submit-review {
+  background: var(--velvet-red);
+  border: none;
+  color: #fff;
+  padding: 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: var(--transition-fast);
+}
+
+.btn-submit-review:hover {
+  background: var(--velvet-red-hover);
+  box-shadow: 0 0 8px var(--velvet-red-glow);
+}
+
+/* 14. 푸터 */
+.app-footer {
+  background: #040508;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  padding: 40px 20px;
+  margin-top: 60px;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  text-align: center;
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-sub);
+}
+
+.footer-brand i {
+  color: var(--velvet-red);
+}
+
+.footer-brand h3 {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+
+.footer-copy {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.footer-disclaimer {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  max-width: 800px;
+  line-height: 1.6;
+}
+
+/* 15. 모바일 반응형 디자인 최적화 */
+@media (max-width: 900px) {
+  .app-header {
+    height: auto;
+  }
+  
+  .header-container {
+    flex-direction: column;
+    height: auto;
+    padding: 15px;
+    gap: 12px;
+    align-items: center;
+  }
+  
+  .breadcrumb-nav {
+    overflow-x: auto;
+    width: 100%;
+    justify-content: center;
+    padding-bottom: 5px;
+  }
+  
+  .breadcrumbs {
+    gap: 4px;
+  }
+  
+  .breadcrumb-item {
+    font-size: 0.75rem;
+  }
+
+  .btn-back-header {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .app-main {
+    padding: 20px 15px;
+  }
+
+  .section-hero h2 {
+    font-size: 1.7rem;
+  }
+
+  .filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-box {
+    max-width: 100%;
+  }
+
+  .screen-card {
+    padding: 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .screen-chevron {
+    align-self: flex-end;
+    width: 35px;
+    height: 35px;
+  }
+
+  /* 좌석 메인 그리드 및 사이드바 상하 배열 */
+  .seat-finder-layout {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .seat-map-wrapper {
+    padding: 15px;
+  }
+
+  .screen-container {
+    width: 95%;
+    margin-bottom: 30px;
+  }
+
+  .legend-container {
+    padding: 8px 12px;
+    gap: 10px;
+    border-radius: 12px;
+  }
+
+  .legend-text {
+    font-size: 0.7rem;
+  }
+
+  .detail-sidebar-container {
+    position: static;
+  }
+
+  .sidebar-content {
+    max-height: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .brand-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .tab-btn {
+    padding: 6px 12px;
+    font-size: 0.75rem;
+  }
+  
+  .seat-view-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .movie-chip {
+    padding: 6px 12px;
+    font-size: 0.75rem;
+  }
+}
